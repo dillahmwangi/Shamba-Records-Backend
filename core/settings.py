@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 from pathlib import Path
 import os
 from dotenv import load_dotenv
+import dj_database_url
+
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -85,16 +87,22 @@ WSGI_APPLICATION = 'core.wsgi.application'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': os.getenv('POSTGRES_DB'),
+#         'USER': os.getenv('POSTGRES_USER'),
+#         'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
+#         'HOST': os.getenv('POSTGRES_HOST', 'localhost'),
+#         'PORT': os.getenv('POSTGRES_PORT', '5432'),
+#     }
+# }
+
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('POSTGRES_DB'),
-        'USER': os.getenv('POSTGRES_USER'),
-        'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
-        'HOST': os.getenv('POSTGRES_HOST', 'localhost'),
-        'PORT': os.getenv('POSTGRES_PORT', '5432'),
-    }
+    "default": dj_database_url.parse(os.environ.get("DATABASE_URL"))
 }
+
+
 
 AUTH_USER_MODEL = 'shamba.User'
 
@@ -128,7 +136,6 @@ AUTH_PASSWORD_VALIDATORS = [
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication',
-        'rest_framework.authentication.SessionAuthentication',
     ],
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
@@ -147,10 +154,10 @@ REST_FRAMEWORK = {
 
 # CORS settings for frontend integration
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",  # React dev server
-    "http://127.0.0.1:3000",
-    "http://localhost:8080",  # Vue dev server
-    "http://127.0.0.1:8080",
+    "http://localhost:5173",  # React dev server
+    "http://127.0.0.1:5173",
+    "http://localhost:8000",  # Django dev server
+    "http://127.0.0.1:8000",
 ]
 
 CORS_ALLOW_CREDENTIALS = True
